@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@layer utilities{
+
+  @keyframes rotating {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-rotating {
+    animation: rotating 3s linear infinite;
+  }
+}
