@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router';
+import shilloute from '../assets/Shilloute.png'
 
 const Shilloute = () => {
 
@@ -15,6 +16,9 @@ const Shilloute = () => {
       const target_Pokemon_Response = await fetch( `${import.meta.env.VITE_POKE_API_KEY}${id}` )
       const target_Pokemon_Result = await target_Pokemon_Response.json()
       setTargetPokemon(target_Pokemon_Result)
+      setGuessPokemon(null)
+      setSearchPokemon("")
+      setCorrectGuess(false)
     } catch (error) {
       console.log("Error",error)
     }
@@ -43,33 +47,40 @@ const Shilloute = () => {
     TargetPokemon()
   }, []);
   return (
-    <div>
-       <div className="flex justify-center">
-        <Link to='/'><button className="border-2 border-white font-bold rounded-md text-white px-4 m-5">
+    <div className="min-h-screen w-full bg-cover bg-center bg-fixed" style={{ backgroundImage: `url(${shilloute})` }}>
+      <div className="flex justify-center">
+        <Link to={'/'}><button className="border-2 border-black/10 border-b-white/20 border-r-white/20 font-semibold rounded-md text-3xl  text-rose-500 text-shadow-rose-300 text-shadow-md px-10 py-2 m-5 backdrop-blur-[2px]">
           Go Back
         </button></Link>
-        <button className="border-2 border-white font-bold rounded-md text-white px-4 m-5" >
+        <button className="border-2 border-black/10 border-b-white/20 border-r-white/20 rounded-md text-3xl  text-rose-500 text-shadow-rose-300 text-shadow-md font-semibold px-10 py-2 m-5 backdrop-blur-[2px]" onClick={TargetPokemon }>
           Reset
         </button>
       </div>
-
+ 
       <div className="flex justify-center">
-        <h1 className="text-white font-bold text-3xl my-5">Guess The Pokemon</h1>
+        <h1 className="text-blue-400 text-shadow-2xs text-shadow-white/90  font-bold text-3xl my-5">Guess The Pokemon</h1>
       </div>
       {targetPokemon &&(
         <>
-          <div>
-            <img src={targetPokemon.sprites.front_default} alt={targetPokemon.name} className={`h-[300px] w-[300px] border ${correctGuess ? "" : 'brightness-0'} `} />
-          </div>
-          <div className='font-bold text-8xl'>
-            {targetPokemon.name}
+          <div className= 'w-full flex justify-center '>
+            <div className='backdrop-blur-[5px] border border-black/10 border-b-white/50 border-r-white/50 rounded-lg'>
+              <img width={300} height={300}  src={targetPokemon.sprites.front_default}  className={` ${correctGuess ? ' ' : 'brightness-0 '} `} />
+            </div>
           </div>
         </>
       )}
 
-      <div>
+      <div className='flex flex-col my-5 items-center'> 
+        {guessPokemon &&correctGuess && (
+          <>
+            <div className='text-[#000000] text-shadow-md text-shadow-white text-4xl tracking-tight font-mono font-bold '>
+              You have Guessed Correctly
+            </div>
+          </>
+        )}
         <form action="">
-          <input type="text" className='border' disabled={correctGuess} onChange={(e) => {setSearchPokemon(e.target.value)}} 
+          <input type="text" placeholder='Enter the pokemon name' className='border placeholder:text-xl placeholder:text-black/30 backdrop-blur-[5px] mt-5 rounded-lg px-2 text-white text-3xl  h-[50px] w-[300px]' disabled={correctGuess} onChange={(e) => {setSearchPokemon(e.target.value)}} 
+          value={searchPokemon}
           onKeyDown={(e) => {if (e.key =="Enter"){
             e.preventDefault()
             GuessPokemon()
@@ -77,23 +88,7 @@ const Shilloute = () => {
           }}}
           />
         </form>
-        {guessPokemon && (
-          <>
-            <div>
-              <img src={guessPokemon.sprites.front_default} alt="" />
-              {guessPokemon.name}
-            </div>
-            <div>
-              {correctGuess && (
-                <>
-                  <div>
-                    correct guess babygirl
-                  </div>
-                </>
-              )}
-            </div>
-          </>
-        )}
+        
       </div>
 
     </div>
