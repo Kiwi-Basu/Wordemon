@@ -1,5 +1,5 @@
 import React from 'react'
-import Pokemon from './components/pokemon'
+import Pokemon from './components/Pokemon'
 import Shilloute from './components/Shilloute'
 import { Route, Routes } from 'react-router'
 import Home from './components/Home'
